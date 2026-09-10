@@ -1,0 +1,24 @@
+# Fail-safe allow-list: ignore everything, then permit only reviewed files.
+#
+# Rationale: the photo EXIF and most ODM outputs contain GPS coordinates that
+# identify the property (odm_report/shots.geojson has per-camera lon/lat;
+# odm_georeferencing/coords.txt holds the UTM origin). The image set and
+# intermediate SfM data are also ~1 GB. Ignoring by default means a future
+# rerun that writes new coordinate-bearing output stays out unless allowed
+# here explicitly.
+#
+# Note: .gitignore does not support trailing comments — a comment after a
+# pattern on the same line becomes part of the pattern.
+*
+
+!.gitignore
+!README.md
+!run-odm.sh
+
+# Coordinate-free run metadata, kept for reproducibility:
+# options.json  - full resolved ODM parameter set
+# benchmark.txt - per-stage timings
+# cameras.json  - camera intrinsics model
+!options.json
+!benchmark.txt
+!cameras.json
