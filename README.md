@@ -6,6 +6,12 @@ model or topographic map. The limiting factor was the photo capture, not the too
 Kept as a reference for the working commands, the environment gotchas, and what to do
 differently on attempt 2.
 
+> **Data removed (2026-09-10).** All photos and ODM outputs have been deleted — the
+> photos carried GPS EXIF and the rasters, point cloud and mesh embedded UTM coordinates
+> identifying the property. Only coordinate-free run metadata is kept: `options.json`
+> (resolved parameter set), `benchmark.txt` (stage timings), `cameras.json` (intrinsics).
+> Reproducing anything below starts with re-shooting — see the attempt-2 capture spec.
+
 ---
 
 ## Goal
@@ -53,13 +59,13 @@ scale estimate. Feeding PNGs throws that away for no benefit.
 ODM reads JPEG/TIFF, not HEIC. `sips` is built into macOS and retains metadata.
 
 ```bash
-mkdir -p ~/slope/images
+mkdir -p ~/dev/casual-projects/slope/images
 for f in ~/source-photos/*.HEIC; do
-  sips -s format jpeg "$f" --out ~/slope/images/"$(basename "${f%.HEIC}").jpg"
+  sips -s format jpeg "$f" --out ~/dev/casual-projects/slope/images/"$(basename "${f%.HEIC}").jpg"
 done
 
 # Verify EXIF survived — if this prints nothing, stop and use exiftool instead
-mdls -name kMDItemLatitude -name kMDItemFocalLength ~/slope/images/*.jpg | head
+mdls -name kMDItemLatitude -name kMDItemFocalLength ~/dev/casual-projects/slope/images/*.jpg | head
 ```
 
 ### 2. Run ODM
@@ -68,7 +74,7 @@ Project layout matters: images must sit in `<project>/images/`, the project dire
 mounted at `/datasets/code`, and `--project-path` points at its parent.
 
 ```bash
-docker run --rm -v ~/slope:/datasets/code opendronemap/odm \
+docker run --rm -v ~/dev/casual-projects/slope:/datasets/code opendronemap/odm \
   --project-path /datasets \
   --feature-quality ultra \
   --min-num-features 20000 \
@@ -102,7 +108,7 @@ Flag rationale:
 `gdal_contour` ships in the image but is **not on its `PATH`**. Use the full path:
 
 ```bash
-docker run --rm -v ~/slope:/data \
+docker run --rm -v ~/dev/casual-projects/slope:/data \
   --entrypoint /code/SuperBuild/install/bin/gdal_contour opendronemap/odm \
   -a elev -i 0.25 /data/odm_dem/dsm.tif /data/contours_25cm.gpkg
 ```
@@ -158,7 +164,8 @@ vegetation back first if actual grade is the goal.
 
 ## Output file map
 
-All under the project root, as siblings of `images/`:
+**These files no longer exist** (see the note at the top). Kept as a map of what a
+successful run produces, all under the project root as siblings of `images/`:
 
 | Path | What |
 |---|---|

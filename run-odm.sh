@@ -3,7 +3,7 @@
 # See README.md for flag rationale, results, and known gotchas.
 set -euo pipefail
 
-PROJECT="${PROJECT:-$HOME/slope}"
+PROJECT="${PROJECT:-$HOME/dev/casual-projects/slope}"
 SOURCE_PHOTOS="${SOURCE_PHOTOS:-}"
 
 # --- Step 1 (optional): HEIC -> JPEG, preserving EXIF -------------------------
